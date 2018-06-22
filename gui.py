@@ -53,14 +53,8 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     window = Window()
-    login = Login()
-    signup = Signup()
-    login.open_logged.connect(lambda: window.show())
-    login.open_signup.connec(lambda: signup.show())
-    window.open_login.connect(lambda: login.show())
 
-    sys.exit(app.exec_())
-    login.setWindowTitle('Anime Recommendation')
-    login.setGeometry(500, 300, 300, 400)
-    login.show()
+    window.setWindowTitle('Anime Recommendation')
+    window.setGeometry(500, 300, 300, 400)
+    window.show()
     sys.exit(app.exec_())
