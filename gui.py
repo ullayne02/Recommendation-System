@@ -4,15 +4,25 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QSize, Qt
 from CollaborativeFiltering import CollaborativeFiltering
+from ContentFiltering import ContentFiltering
 import readDataframe
 
-
-class Window(QWidget):
+class Window(QTabWidget):
     def __init__(self):
-        super(Window, self).__init__()
+        super(Window,self).__init__()
+        animes = readDataframe.Animes()
+        self.itemBased = WindowFiltering(CollaborativeFiltering(animes.animes,animes.rating))
+        self.contentBased = WindowFiltering(ContentFiltering(animes.animes))
+        self.addTab(self.itemBased,"Pessoas tambem assistiram")
+        self.addTab(self.contentBased,"Porque voce assistiu")
+
+
+class WindowFiltering(QWidget):
+    def __init__(self,filter):
+        super(WindowFiltering, self).__init__()
         self.k=10
         animes = readDataframe.Animes()
-        self.cf = CollaborativeFiltering(animes.animes,animes.rating)
+        self.f = filter
 
         self.listWidget = QListWidget()
         self.listWidget.resize(300,120)
@@ -32,18 +42,19 @@ class Window(QWidget):
 
     def Clicked(self,item):
         self.listWidget2.clear()
-        anime_list = self.cf.top_animes(self.k, item.text())
+        anime_list = self.f.top_animes(self.k, item.text())
         for i in anime_list:
             self.listWidget2.addItem(i)
 
-    
+
 
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
+
     window = Window()
+
     window.setWindowTitle('Anime Recommendation')
     window.setGeometry(500, 300, 300, 400)
-    ex = Window()
-    ex.show()
+    window.show()
     sys.exit(app.exec_())

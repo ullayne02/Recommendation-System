@@ -8,7 +8,7 @@ class Animes:
         self.animes = pd.read_csv(f'{path}anime.csv')
 
         self.animes.set_index('anime_id',drop=True,inplace=True)
-
+        self.animes.dropna(inplace=True)
         self.rating.rating.replace(-1,np.nan,inplace=True)
 
         self.animes = self.animes[self.animes['type'] == 'TV']
